@@ -1,0 +1,25 @@
+server:
+  port: 8080
+#  error:
+#    include-message: always
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/audit_log?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        format_sql: true
+    show-sql: false
+
+# JWT Properties
+jwt:
+  secret: foobar_123456789_foobar_123456789_foobar_123456789_foobar_123456789

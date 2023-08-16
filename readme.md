@@ -1,0 +1,2 @@
+- https://stackoverflow.com/questions/21992201/how-to-revoke-auth-token-in-spring-security
+- Search promp - "How to logout (revoke token + refresh token) user in Spring Security using OAuth 2.0"
