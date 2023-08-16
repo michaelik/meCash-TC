@@ -38,15 +38,10 @@ public class Transaction {
     )
     String debitAccount;
     @Column(
-            name = "recipient_firstname",
+            name = "recipient_name",
             nullable = false
     )
-    String recipientFirstName;
-    @Column(
-            name = "recipient_lastname",
-            nullable = false
-    )
-    String recipientLastName;
+    String recipientName;
     @Column(
             name = "recipient_account",
             nullable = false
