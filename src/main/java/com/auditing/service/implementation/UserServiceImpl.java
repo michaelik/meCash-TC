@@ -100,6 +100,7 @@ public class UserServiceImpl implements UserService {
                         "User with id [%s] not Found".formatted(id)
                 ));
         return UserDetailResponse.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .age(user.getAge())
