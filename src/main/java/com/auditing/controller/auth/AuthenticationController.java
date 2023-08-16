@@ -4,7 +4,7 @@ import com.auditing.jwt.JWTUtilService;
 import com.auditing.payload.request.SignInRequest;
 import com.auditing.payload.request.SignUpRequest;
 import com.auditing.payload.response.SignInResponse;
-import com.auditing.service.AuthenticationService;
+import com.auditing.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +25,7 @@ import javax.validation.Valid;
 public class AuthenticationController {
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private UserService authenticationService;
     @Autowired
     private JWTUtilService jwtUtilService;
 

@@ -1,14 +1,18 @@
 package com.auditing.service.implementation;
 
+import com.auditing.enums.AccountCurrency;
 import com.auditing.enums.Gender;
 import com.auditing.exception.DuplicateResourceException;
 import com.auditing.jwt.JWTUtilService;
+import com.auditing.model.Account;
 import com.auditing.model.User;
 import com.auditing.payload.request.SignInRequest;
 import com.auditing.payload.request.SignUpRequest;
 import com.auditing.payload.response.SignInResponse;
-import com.auditing.repository.AuthenticationRepository;
-import com.auditing.service.AuthenticationService;
+import com.auditing.payload.response.UserDetailResponse;
+import com.auditing.repository.AccountRepository;
+import com.auditing.repository.UserRepository;
+import com.auditing.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,18 +22,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private AuthenticationRepository authenticationRepository;
+    private UserRepository userRepository;
+    @Autowired
+    private AccountServiceImpl accountService;
+    @Autowired
+    private AccountRepository accountRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -37,12 +44,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void signUp(SignUpRequest request) {
-        boolean userEmailExist = authenticationRepository
+        boolean userEmailExist = userRepository
                 .findByEmail(request.getEmail())
                 .isPresent();
         if (userEmailExist) throw new DuplicateResourceException("Email Already Taken");
         Gender gender = Gender.valueOf(request.getGender());
-
         String password = passwordEncoder.encode(request.getPassword());
         User user = User.builder()
                 .name(request.getName())
@@ -51,8 +57,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .age(request.getAge())
                 .gender(gender)
                 .build();
-
-        authenticationRepository.save(user);
+        AccountCurrency accountCurrency = AccountCurrency.valueOf(request.getAccountCurrency());
+        Account account = accountService.createAccount(accountCurrency);
+        account.setUser(user);
+        user.setAccount(account);
+        userRepository.save(user);
+        accountRepository.save(account);
     }
 
     @Override
@@ -79,6 +89,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 roles,
                 principal.getUsername()
         );
+    }
+
+    @Override
+    public UserDetailResponse getUserDetail() {
+        return null;
     }
 
 }
