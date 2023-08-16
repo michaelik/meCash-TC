@@ -1,15 +1,19 @@
 package com.auditing.controller.finance;
 
+import com.auditing.payload.request.FundAccountRequest;
+import com.auditing.payload.response.FundAccountResponse;
 import com.auditing.payload.response.UserDetailResponse;
+import com.auditing.service.AccountService;
 import com.auditing.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +24,27 @@ public class FinanceController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(path = "/user-detail", produces = "application/json")
-    public ResponseEntity<UserDetailResponse> getUserDetail(){
-        return new ResponseEntity<>(userService.getUserDetail(), HttpStatus.OK);
+    @Autowired
+    private AccountService accountService;
+
+    @GetMapping(path = "/user-detail/{id}", produces = "application/json")
+    public ResponseEntity<UserDetailResponse> getUserDetail(
+            @PathVariable("id") Integer userId)
+    {
+        return new ResponseEntity<>(userService.getUserDetail(userId), HttpStatus.OK);
     }
+
+    @PostMapping(path = "/fund-account/{id}")
+    public ResponseEntity<FundAccountResponse> fundAccount (
+            @PathVariable("id") Integer userId,
+            @RequestBody @Valid FundAccountRequest request){
+        accountService.fundAccount(userId, request);
+        FundAccountResponse fundAccountResponse = FundAccountResponse.builder()
+                .createdAt(LocalDateTime.now())
+                .status("Success")
+                .build();
+        return new ResponseEntity<>(fundAccountResponse, HttpStatus.OK);
+    }
+
+    
 }

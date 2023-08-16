@@ -8,7 +8,7 @@ import com.auditing.payload.response.AccountDetailResponse;
 public interface AccountService {
     Account createAccount(AccountCurrency currency);
 
-    void fundAccount(FundAccountRequest request);
+    void fundAccount(Integer userId, FundAccountRequest request);
 
     AccountDetailResponse getAccountBalance();
 }

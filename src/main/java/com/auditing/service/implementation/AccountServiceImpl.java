@@ -1,7 +1,10 @@
 package com.auditing.service.implementation;
 
 import com.auditing.enums.AccountCurrency;
+import com.auditing.exception.InvalidAmountException;
+import com.auditing.exception.UserNotFoundException;
 import com.auditing.model.Account;
+import com.auditing.model.User;
 import com.auditing.payload.request.FundAccountRequest;
 import com.auditing.payload.response.AccountDetailResponse;
 import com.auditing.repository.AccountRepository;
@@ -37,8 +40,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void fundAccount(FundAccountRequest request) {
-
+    public void fundAccount(Integer id, FundAccountRequest request) {
+        User user = userRepository
+                .findById(id)
+                .orElseThrow(()-> new UserNotFoundException(
+                        "User with id [%s] not Found".formatted(id)
+                ));
+        if (request.getAmount().compareTo(BigDecimal.ONE) < 0)
+            throw new InvalidAmountException(
+                    "Amount [%s] is invalid".formatted(request.getAmount())
+            );
+        Account account = accountRepository.findAccountByUser(user);
+        BigDecimal amount = account.getBalance().add(request.getAmount());
+        account.setBalance(amount);
+        accountRepository.save(account);
     }
 
     @Override

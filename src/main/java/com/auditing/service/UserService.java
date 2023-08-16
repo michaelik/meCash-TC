@@ -12,5 +12,5 @@ public interface UserService {
 
     SignInResponse signIn(SignInRequest request);
 
-    UserDetailResponse getUserDetail();
+    UserDetailResponse getUserDetail(Integer id);
 }

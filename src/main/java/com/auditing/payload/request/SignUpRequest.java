@@ -32,7 +32,6 @@ public class SignUpRequest {
     @NotBlank(message = "gender should not be empty")
     @Pattern(regexp = "[MF]", message = "Only currency M and F is accepted")
     String gender;
-
     @NotBlank(message = "Account currency should not be empty")
     @Pattern(regexp = "[AB]", message = "Only currency A and B is accepted")
     String accountCurrency;

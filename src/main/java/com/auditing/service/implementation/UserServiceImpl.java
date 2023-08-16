@@ -3,6 +3,7 @@ package com.auditing.service.implementation;
 import com.auditing.enums.AccountCurrency;
 import com.auditing.enums.Gender;
 import com.auditing.exception.DuplicateResourceException;
+import com.auditing.exception.UserNotFoundException;
 import com.auditing.jwt.JWTUtilService;
 import com.auditing.model.Account;
 import com.auditing.model.User;
@@ -92,8 +93,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetailResponse getUserDetail() {
-        return null;
+    public UserDetailResponse getUserDetail(Integer id) {
+        User user = userRepository
+                .findById(id)
+                .orElseThrow(()-> new UserNotFoundException(
+                        "User with id [%s] not Found".formatted(id)
+                ));
+        return UserDetailResponse.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .age(user.getAge())
+                .gender(user.getGender())
+                .accountNumber(user.getAccount().getAccountNumber())
+                .accountCurrency(user.getAccount().getCurrency())
+                .build();
     }
 
 }
