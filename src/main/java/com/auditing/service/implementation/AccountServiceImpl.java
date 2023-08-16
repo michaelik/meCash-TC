@@ -57,8 +57,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDetailResponse getAccountBalance() {
-        return null;
+    public AccountDetailResponse getAccountBalance(Integer id) {
+        User user = userRepository
+                .findById(id)
+                .orElseThrow(()-> new UserNotFoundException(
+                        "User with id [%s] not Found".formatted(id)
+                ));
+        Account account = accountRepository.findAccountByUser(user);
+        return AccountDetailResponse.builder()
+                .accountName(user.getName())
+                .accountNumber(account.getAccountNumber())
+                .totalAccountBalance(account.getCurrency() + "" + account.getBalance())
+                .build();
     }
 
     private static String generateTenDigitAccountNumber(){

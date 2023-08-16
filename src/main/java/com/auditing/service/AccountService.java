@@ -10,5 +10,5 @@ public interface AccountService {
 
     void fundAccount(Integer userId, FundAccountRequest request);
 
-    AccountDetailResponse getAccountBalance();
+    AccountDetailResponse getAccountBalance(Integer userId);
 }

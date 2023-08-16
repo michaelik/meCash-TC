@@ -1,6 +1,7 @@
 package com.auditing.controller.finance;
 
 import com.auditing.payload.request.FundAccountRequest;
+import com.auditing.payload.response.AccountDetailResponse;
 import com.auditing.payload.response.FundAccountResponse;
 import com.auditing.payload.response.UserDetailResponse;
 import com.auditing.service.AccountService;
@@ -46,5 +47,9 @@ public class FinanceController {
         return new ResponseEntity<>(fundAccountResponse, HttpStatus.OK);
     }
 
-    
+    @GetMapping(path = "/account-balance/{id}", produces = "application/json")
+    public ResponseEntity<AccountDetailResponse> getAccountBalance(
+            @PathVariable("id") Integer userId){
+        return new ResponseEntity<>(accountService.getAccountBalance(userId), HttpStatus.OK);
+    }
 }
