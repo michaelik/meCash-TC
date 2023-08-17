@@ -1,7 +1,7 @@
 ## Author
 #### Name: Ikechukwu Michael, Email: mikeikechi3@gmail.com
 ## Introduction🖖
-My solution to [meCash](https://www.musala.com) technical assessment.
+My solution to [meCash](https://www.me-cash.com/) technical assessment.
 
 ### Specification
 
@@ -44,7 +44,7 @@ spring:
 * Clone this repo:
 
 ```bash
-git clone https://github.com/michaelik/Financial-Based-REST-Service-APIs.git
+git clone https://github.com/michaelik/meCash-TC.git
 ```
 * Navigate to the root directory of the project.
 * Build the application
